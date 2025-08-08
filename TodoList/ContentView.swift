@@ -31,21 +31,27 @@ struct ContentView: View {
                         .fontWeight(.bold)
                 }
             } // end of Hstack
+            .padding()
             Spacer() // push up
             
             List{ // displays list of task
-                ForEach (toDo) { toDoItem in Text(toDoItem.title)
-                    
+                ForEach (toDo) { toDoItem in if toDoItem.isImportant {
+                    Text("‼" + toDoItem.title)
+                } else {
+                    Text(toDoItem.title)
+                    }
                 }
             }
             
             
             if showNewTask {
-                NewToDo()
+                NewToDo(toDoItem: ToDoItem(title: "", isImportant: false))
             }
             
         } // end of Vstack
-        .padding()
+        if showNewTask {
+              NewToDo(toDoItem: ToDoItem(title: "", isImportant: false))
+            }
     }
 }
 

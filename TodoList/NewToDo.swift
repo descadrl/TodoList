@@ -8,6 +8,10 @@
 import SwiftUI
 
 struct NewToDo: View {
+    
+    @Bindable var toDoItem: ToDoItem
+    @Environment(\.modelContext) var modelContext
+    
     var body: some View {
         
         
@@ -15,30 +19,35 @@ struct NewToDo: View {
             Text("Task Title:")
                 .font(.title)
                 .fontWeight(.bold)
-            TextField("Enter the task description", text: /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Value@*/.constant("")/*@END_MENU_TOKEN@*/)
+            TextField("Enter the task description", text: $toDoItem.title)
                 .padding()
                 .background(Color(.systemGroupedBackground))
                 .cornerRadius(15)
                 .padding()
             
-            Toggle(isOn: /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Is On@*/.constant(true)/*@END_MENU_TOKEN@*/) {
+            Toggle(isOn: $toDoItem.isImportant) {
                 Text("Is it important?")
             }
             
             Button {
-                
+                addToDo()
             } label: {
                 Text("Save")
             }
-
+            
             
         }// end of Vstack
         .padding()
+        
+    }
+    func addToDo() {
+        let toDo = ToDoItem(title: toDoItem.title, isImportant:toDoItem.isImportant)
+        modelContext.insert(toDo)
+        }
     }
         
-}
 
 
 #Preview {
-    NewToDo()
+    NewToDo(toDoItem: ToDoItem(title: "", isImportant: false))
 }
